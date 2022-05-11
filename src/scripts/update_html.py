@@ -7,14 +7,14 @@ from github import Github, InputGitAuthor, GithubException
 from bs4 import BeautifulSoup
 
 ballerina_bot_username = os.environ['BALLERINA_BOT_USERNAME']
-ballerina_bot_token = os.environ[]'BALLERINA_BOT_TOKEN']
+ballerina_bot_token = os.environ['BALLERINA_BOT_TOKEN']
 ballerina_bot_email = os.environ['BALLERINA_BOT_EMAIL']
 ballerina_reviewer_bot_token = os.environ['BALLERINA_REVIEWER_BOT_TOKEN']
 
 github = Github(ballerina_bot_token)
 
 def main():
-    repo = github.get_repo('ballerina-platform/ballerina-dev-website', ref='master')
+    repo = github.get_repo('ballerina-platform/ballerina-dev-website', 'master')
     html_file = repo.get_contents('index.html')
     html_file = html_file.decoded_content.decode('utf-8')
 
@@ -25,7 +25,7 @@ def main():
         html_doc = soup1.read()
         soup = BeautifulSoup(html_doc, 'html.parser')
 
-    with open('working_with_data.bal', 'r') as action_obj:
+    with open('src/scripts/working_with_data.bal', 'r') as action_obj:
         action_bbe = action_obj.readlines()
 
     old_text = soup.find('div', {'id':'working-with-data'})
@@ -59,10 +59,10 @@ def main():
         print('Error occurred while committing changes to ballerina-dev-website', e)
 
 # commit the changes
-def commit_file(file_path, Updated_file_content, commit_branch, commit_message):
+def commit_file(file_path, updated_file_content, commit_branch, commit_message):
     try:
         author = InputGitAuthor(ballerina_bot_username, ballerina_bot_email)
-        repo = github.get_repo('ballerina-platform/ballerina-dev-website', ref='master')
+        repo = github.get_repo('ballerina-platform/ballerina-dev-website', 'master')
         remote_file = repo.get_contents(file_path)
 
         base = repo.get_branch('master')
